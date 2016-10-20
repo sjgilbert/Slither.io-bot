@@ -57,6 +57,7 @@ var customBotOptions = {
 window.log = function() {
     if (window.logDebugging) {
         console.log.apply(console, arguments);
+        console.log("Hello World");
     }
 };
 
