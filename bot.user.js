@@ -1,3 +1,4 @@
+//Sam Gilbert
 /*
 Copyright (c) 2016 Ermiya Eskandary & Théophile Cailliau and other contributors
 This Source Code Form is subject to the terms of the Mozilla Public
