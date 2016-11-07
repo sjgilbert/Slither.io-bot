@@ -65,9 +65,6 @@ function GM_XHR() {
     };
 };
 
-$.ajaxSetup({
-    xhr: function(){return new GM_XHR;}
-});
 
 
 //Sam Gilbert
@@ -93,6 +90,9 @@ Override bot options here
 Uncomment variables you wish to change from their default values
 Changes you make here will be kept between script versions
 */
+$.ajaxSetup({
+    xhr: function(){return new GM_XHR;}
+});
 var customBotOptions = {
     // target fps
     // targetFps: 30,
