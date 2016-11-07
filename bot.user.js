@@ -113,7 +113,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 // @author       Ermiya Eskandary & Théophile Cailliau
 // @match        http://slither.io/
 // @grant        none
-// @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
+// @require      http://code.jquery.com/jquery-3.1.1.min.js
 // ==/UserScript==
 
 /*
