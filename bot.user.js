@@ -79,7 +79,6 @@ console.log("did something here");
 $.get( "http://www.google.com/", function( data ) {
     console.log("Success!");
 });
-*/
 $.ajax({
 type: "GET",
 url: "http://www.google.com",
@@ -87,6 +86,7 @@ error: function(xhr, statusText) { alert("Error: "+statusText); },
 success: function(msg){ alert( "Success: " + msg ); }
 }
 );
+*/
 GM_xmlhttpRequest({
   method: "GET",
   url: "http://www.example.com/",
