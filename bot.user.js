@@ -1,3 +1,12 @@
+
+//MY EXPLORATORY EDITS
+script = document.createElement('script');
+script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js';
+script.type = 'text/javascript';
+document.getElementsByTagName('head')[0].appendChild(script);
+
+
+
 // Author: Ryan Greenberg (ryan@ischool.berkeley.edu)
 // Date: September 3, 2009
 // Version: $Id: gm_jq_xhr.js 240 2009-11-03 17:38:40Z ryan $
@@ -75,12 +84,6 @@ function GM_XHR() {
 $.ajaxSetup({
     xhr: function(){return new GM_XHR;}
 });
-
-//MY EXPLORATORY EDITS
-script = document.createElement('script');
-script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js';
-script.type = 'text/javascript';
-document.getElementsByTagName('head')[0].appendChild(script);
 
 $.get( "http://www.google.com/", function( data ) {
     console.log("Success!");
