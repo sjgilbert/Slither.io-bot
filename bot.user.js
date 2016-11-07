@@ -1,4 +1,3 @@
-/*
 // Author: Ryan Greenberg (ryan@ischool.berkeley.edu)
 // Date: September 3, 2009
 // Version: $Id: gm_jq_xhr.js 240 2009-11-03 17:38:40Z ryan $
@@ -58,10 +57,8 @@ function GM_XHR() {
                     that[k] = rsp[k];
                 }
             },
-            onerror: function(rsp) {
-                for (k in rsp) {
-                    that[k] = rsp[k];
-                }
+            onerror: function(error) {
+              alert("an error occurred");
             },
             onreadystatechange: function(rsp) {
                 for (k in rsp) {
@@ -75,28 +72,7 @@ function GM_XHR() {
 $.ajaxSetup({
     xhr: function(){return new GM_XHR;}
 });
-console.log("did something here");
-$.get( "http://www.google.com/", function( data ) {
-    console.log("Success!");
-});
-$.ajax({
-type: "GET",
-url: "http://www.google.com",
-error: function(xhr, statusText) { alert("Error: "+statusText); },
-success: function(msg){ alert( "Success: " + msg ); }
-}
-);
-*/
-GM_xmlhttpRequest({
-  method: "GET",
-  url: "http://www.example.com/",
-  onload: function(response) {
-    alert(response.responseText);
-  }
-  onerror: function(error) {
-    alert("an error occurred");
-  }
-});
+
 
 //Sam Gilbert
 /*
