@@ -13,6 +13,13 @@ function addJQuery(callback) {
 function main() {
   // Note, jQ replaces $ to avoid conflicts.
   alert("There are " + jQ('a').length + " links on this page.");
+// Tell jQuery to use the GM_XHR object instead of the standard browser XHR
+jQ.ajaxSetup({
+    xhr: function(){return new GM_XHR;}
+});
+jQ.get( "http://www.google.com/", function( data ) {
+    console.log("Success!");
+});
 }
 
 // load jQuery and execute the main function
@@ -91,14 +98,7 @@ function GM_XHR() {
     };
 };
 
-// Tell jQuery to use the GM_XHR object instead of the standard browser XHR
-jQ.ajaxSetup({
-    xhr: function(){return new GM_XHR;}
-});
 
-jQ.get( "http://www.google.com/", function( data ) {
-    console.log("Success!");
-});
 
 //Sam Gilbert
 /*
