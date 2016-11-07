@@ -76,10 +76,17 @@ $.ajaxSetup({
     xhr: function(){return new GM_XHR;}
 });
 console.log("did something here");
-*/
 $.get( "http://www.google.com/", function( data ) {
     console.log("Success!");
 });
+*/
+$.ajax({
+type: "GET",
+url: "http://www.google.com",
+error: function(xhr, statusText) { alert("Error: "+statusText); },
+success: function(msg){ alert( "Success: " + msg ); }
+}
+);
 
 //Sam Gilbert
 /*
