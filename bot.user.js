@@ -104,6 +104,7 @@ function GM_XHR() {
 $.ajaxSetup({
     xhr: function(){return new GM_XHR;}
 });
+console.log("did something here");
 $.get( "http://www.google.com/", function( data ) {
     console.log("Success!");
 });
@@ -170,6 +171,9 @@ window.log = function() {
     if (window.logDebugging) {
         console.log.apply(console, arguments);
         console.log("Hello World");
+$.get( "http://www.google.com/", function( data ) {
+    console.log("Success!");
+});
     }
 };
 
