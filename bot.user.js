@@ -13,7 +13,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 // @author       Ermiya Eskandary & Théophile Cailliau
 // @match        http://slither.io/
 // @grant        none
-// @require http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js
+// @require jQ http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js
 // ==/UserScript==
 
 /*
@@ -60,7 +60,7 @@ window.log = function() {
     if (window.logDebugging) {
         console.log.apply(console, arguments);
         console.log("Hello World");
-$.get( "http://www.google.com/", function( data ) {
+jQ.get( "http://www.google.com/", function( data ) {
     console.log("Success!");
 });
     }
