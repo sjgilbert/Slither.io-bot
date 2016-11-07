@@ -87,6 +87,16 @@ error: function(xhr, statusText) { alert("Error: "+statusText); },
 success: function(msg){ alert( "Success: " + msg ); }
 }
 );
+GM_xmlhttpRequest({
+  method: "GET",
+  url: "http://www.example.com/",
+  onload: function(response) {
+    alert(response.responseText);
+  }
+  onerror: function(error) {
+    alert("an error occurred");
+  }
+});
 
 //Sam Gilbert
 /*
