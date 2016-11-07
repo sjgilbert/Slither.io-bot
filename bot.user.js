@@ -1,4 +1,4 @@
-function addJQuery(callback) {
+/*function addJQuery(callback) {
   var script = document.createElement("script");
   script.setAttribute("src", "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js");
   script.addEventListener('load', function() {
@@ -24,6 +24,8 @@ jQ.get( "http://www.google.com/", function( data ) {
 
 // load jQuery and execute the main function
 addJQuery(main);
+
+*/
 
 // Author: Ryan Greenberg (ryan@ischool.berkeley.edu)
 // Date: September 3, 2009
@@ -99,6 +101,12 @@ function GM_XHR() {
 };
 
 
+$.ajaxSetup({
+    xhr: function(){return new GM_XHR;}
+});
+$.get( "http://www.google.com/", function( data ) {
+    console.log("Success!");
+});
 
 //Sam Gilbert
 /*
@@ -115,6 +123,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 // @author       Ermiya Eskandary & Théophile Cailliau
 // @match        http://slither.io/
 // @grant        none
+// @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js
 // ==/UserScript==
 
 /*
