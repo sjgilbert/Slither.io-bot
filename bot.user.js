@@ -81,7 +81,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 // @description  Slither.io bot
 // @author       Ermiya Eskandary & Théophile Cailliau
 // @match        http://slither.io/
-// @grant        GM_xmlhttpRequest
+// @grant        none
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
 // ==/UserScript==
 
