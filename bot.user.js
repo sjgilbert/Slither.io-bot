@@ -112,7 +112,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 // @description  Slither.io bot
 // @author       Ermiya Eskandary & Théophile Cailliau
 // @match        http://slither.io/
-// @grant        none
+// @grant        GM_xmlhttpRequest
 // @require      http://code.jquery.com/jquery-3.1.1.min.js
 // ==/UserScript==
 
