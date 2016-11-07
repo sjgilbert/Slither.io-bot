@@ -85,7 +85,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 // @author       Ermiya Eskandary & Théophile Cailliau
 // @match        http://slither.io/
 // @grant        GM_xmlhttpRequest
-// @require      http://code.jquery.com/jquery-3.1.1.min.js
+// @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
 // ==/UserScript==
 
 /*
