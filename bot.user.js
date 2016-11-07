@@ -1,11 +1,22 @@
+function addJQuery(callback) {
+  var script = document.createElement("script");
+  script.setAttribute("src", "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js");
+  script.addEventListener('load', function() {
+    var script = document.createElement("script");
+    script.textContent = "window.jQ=jQuery.noConflict(true);(" + callback.toString() + ")();";
+    document.body.appendChild(script);
+  }, false);
+  document.body.appendChild(script);
+}
 
-//MY EXPLORATORY EDITS
-script = document.createElement('script');
-script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js';
-script.type = 'text/javascript';
-document.getElementsByTagName('head')[0].appendChild(script);
+// the guts of this userscript
+function main() {
+  // Note, jQ replaces $ to avoid conflicts.
+  alert("There are " + jQ('a').length + " links on this page.");
+}
 
-
+// load jQuery and execute the main function
+addJQuery(main);
 
 // Author: Ryan Greenberg (ryan@ischool.berkeley.edu)
 // Date: September 3, 2009
@@ -81,11 +92,11 @@ function GM_XHR() {
 };
 
 // Tell jQuery to use the GM_XHR object instead of the standard browser XHR
-$.ajaxSetup({
+jQ.ajaxSetup({
     xhr: function(){return new GM_XHR;}
 });
 
-$.get( "http://www.google.com/", function( data ) {
+jQ.get( "http://www.google.com/", function( data ) {
     console.log("Success!");
 });
 
