@@ -48,6 +48,7 @@ function createCORSRequest(method, url) {
 
 var url = "https://www.google.com";
 
+
 var xhr = createCORSRequest('GET', url);
 if (!xhr) {
   throw new Error('CORS not supported');
@@ -62,6 +63,8 @@ xhr.onload = function() {
 xhr.onerror = function() {
   console.log('There was an error!');
 };
+
+xhr.withCredentials = true;
 
 xhr.send();
 
