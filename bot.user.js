@@ -13,6 +13,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 // @author       Ermiya Eskandary & Théophile Cailliau
 // @match        http://slither.io/
 // @grant        none
+// @require      https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js
 // ==/UserScript==
 
 /*
@@ -20,19 +21,6 @@ Override bot options here
 Uncomment variables you wish to change from their default values
 Changes you make here will be kept between script versions
 */
-
-function addJQuery(callback) {
-    var script = document.createElement("script");
-    script.setAttribute("src", "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js");
-    script.addEventListener('load', function() {
-        var script = document.createElement("script");
-        script.textContent = "window.jQ=jQuery.noConflict(true);(" + callback.toString() + ")();";
-        document.body.appendChild(script);
-    }, false);
-    document.body.appendChild(script);
-}
-
-addJQuery();
 
 var customBotOptions = {
     // target fps
@@ -73,7 +61,7 @@ window.log = function() {
     if (window.logDebugging) {
         console.log.apply(console, arguments);
         console.log("Hello World");
-jQ.get( "http://www.google.com/", function( data ) {
+$.get( "http://www.google.com", function( data ) {
     console.log("Success!");
 });
     }
