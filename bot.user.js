@@ -57,7 +57,7 @@ if (!xhr) {
 xhr.onload = function() {
  var responseText = xhr.responseText;
  console.log("CUPCAKES CUPCAKES");
- console.log(responseText);
+ console.log(responseText + "CUPCAKES");
  // process the response.
 };
 
