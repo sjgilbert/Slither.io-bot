@@ -46,7 +46,7 @@ function createCORSRequest(method, url) {
   return xhr;
 }
 
-var url = "https://www.google.com";
+var url = "http://localhost:8080";
 
 
 var xhr = createCORSRequest('GET', url);
