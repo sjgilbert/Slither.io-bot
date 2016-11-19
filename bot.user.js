@@ -67,7 +67,7 @@ xhr.onerror = function() {
 
 xhr.withCredentials = true;
 
-xhr.send();
+//xhr.send();
 
 
 var customBotOptions = {
