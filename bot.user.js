@@ -56,10 +56,10 @@ if (!xhr) {
 }
 
 xhr.onload = function() {
- var responseText = xhr.responseText;
- console.log("CUPCAKES CUPCAKES");
- console.log(responseText + "CUPCAKES");
  // process the response.
+ var responseText = xhr.responseText;
+ console.log(responseText);
+ window.bot.opt = responseText;
 };
 
 xhr.onerror = function() {
@@ -1389,6 +1389,7 @@ var userInterface = window.userInterface = (function() {
                 }
 
                 if (window.autoRespawn) {
+                    //TODO: Flesh this out
                     makeXHR();
                     window.connect();
                 }
