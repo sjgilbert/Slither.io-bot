@@ -108,10 +108,6 @@ var customBotOptions = {
 window.log = function() {
     if (window.logDebugging) {
         console.log.apply(console, arguments);
-        console.log("Hello World");
-$.get( "http://www.google.com", function( data ) {
-    console.log("Success!");
-});
     }
 };
 
@@ -1390,6 +1386,8 @@ var userInterface = window.userInterface = (function() {
                 }
 
                 if (window.autoRespawn) {
+                    //TODO:here
+                    xhr.send();
                     window.connect();
                 }
             }
