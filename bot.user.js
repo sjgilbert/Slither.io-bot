@@ -48,6 +48,7 @@ function createCORSRequest(method, url) {
 
 var url = "http://localhost:8080";
 
+function makeXHR() {
 
 var xhr = createCORSRequest('GET', url);
 if (!xhr) {
@@ -66,8 +67,10 @@ xhr.onerror = function() {
 };
 
 xhr.withCredentials = true;
+xhr.send();
+} 
 
-//xhr.send();
+
 
 
 var customBotOptions = {
@@ -1386,8 +1389,7 @@ var userInterface = window.userInterface = (function() {
                 }
 
                 if (window.autoRespawn) {
-                    //TODO:here
-                    xhr.send();
+                    makeXHR();
                     window.connect();
                 }
             }
