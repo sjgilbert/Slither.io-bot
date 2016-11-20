@@ -51,7 +51,8 @@ function encodeQueryData(data) {
 function makeXHR() {
 
 var url = "http://localhost:8080";
-url = url + "?" + encodeQueryData(bot.scores) + encodeQueryData(bot.opt);
+url = url + "?" + encodeQueryData(bot.scores) + "&" + encodeQueryData(bot.opt);
+console.log(url);
 
 var xhr = createCORSRequest('GET', url);
 if (!xhr) {
