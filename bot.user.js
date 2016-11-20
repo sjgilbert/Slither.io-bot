@@ -1398,8 +1398,8 @@ var userInterface = window.userInterface = (function() {
 
                 if (window.autoRespawn) {
                     if (bot.scores.length === 3) {
-                        bot.scores = [];
                         makeXHR();
+                        bot.scores = [];
                     }
                     window.connect();
                 }
