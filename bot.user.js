@@ -15,12 +15,6 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 // @grant        none
 // ==/UserScript==
 
-/*TODO: find where the score is kept, and create 
-an array of them, to send off to the server when the
-generation is done.  Also wipe the list when new 
-opts come in :)
-*/
-
 //TODO: refactor to make this whole thing cleaner
 //and also move it so it isn't right at the top...ugly
 function createCORSRequest(method, url) {
@@ -47,12 +41,17 @@ function createCORSRequest(method, url) {
   return xhr;
 }
 
-/*TODO: wrap this url assignment into the creation of
-the request, and add params so it can return scores
-*/
-var url = "http://localhost:8080";
+function encodeQueryData(data) {
+   let ret = [];
+   for (let d in data)
+     ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+   return ret.join('&');
+}
 
 function makeXHR() {
+
+var url = "http://localhost:8080";
+url = url + "?" + encodeQueryData(bot.scores) + encodeQueryData(bot.opt);
 
 var xhr = createCORSRequest('GET', url);
 if (!xhr) {
@@ -115,7 +114,6 @@ var customBotOptions = {
     // you will lose your custom options
     // useDefaults: true
 };
-
 // Custom logging function - disabled by default
 window.log = function() {
     if (window.logDebugging) {
@@ -1398,20 +1396,10 @@ var userInterface = window.userInterface = (function() {
                 }
 
                 if (window.autoRespawn) {
-                    /*
-                    TODO: (maybe?) add conditional
-                    and only make the request for new
-                    snake opts after some number of 
-                    games (maybe on the condition
-                    that enough time has passed, so
-                    we know the snake got to play 
-                    quality games. then again, maybe
-                    snake isn't dying because of
-                    lack of processing power/ slow 
-                    internet connection, and is just
-                    dying becuase its a shitty config
-                    */
-                    makeXHR();
+                    if (bot.scores.length === 3) {
+                        bot.scores = [];
+                        makeXHR();
+                    }
                     window.connect();
                 }
             }
