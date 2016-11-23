@@ -54,7 +54,7 @@ function makeXHR() {
         
 
 var url = "http://localhost:8080";
-url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt) + "&" encodeQueryData({ranks:bot.ranks});
+url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt) + "&" + encodeQueryData({ranks:bot.ranks});
     if (time === null) {
         var time = performance.now();
     }
