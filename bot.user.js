@@ -15,6 +15,8 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 // @grant        none
 // ==/UserScript==
 
+makeXHR();
+
 //TODO: refactor to make this whole thing cleaner
 //and also move it so it isn't right at the top...ugly
 function createCORSRequest(method, url) {
@@ -49,9 +51,17 @@ function encodeQueryData(data) {
 }
 
 function makeXHR() {
+        
 
 var url = "http://localhost:8080";
-url = url + "?" + encodeQueryData(bot.scores) + "&" + encodeQueryData(bot.opt);
+url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt) + "&" encodeQueryData({ranks:bot.ranks});
+    if (time === null) {
+        var time = performance.now();
+    }
+    else {
+        url = url + "&" + encodeQueryData({"time":performance.now() - time});
+        time = performance.now();
+    }
 console.log(url);
 
 var xhr = createCORSRequest('GET', url);
@@ -418,6 +428,7 @@ var bot = window.bot = (function() {
         collisionPoints: [],
         collisionAngles: [],
         scores: [],
+        ranks: [],
         foodTimeout: undefined,
         sectorBoxSide: 0,
         defaultAccel: 0,
@@ -1389,6 +1400,9 @@ var userInterface = window.userInterface = (function() {
             } else if (bot.isBotEnabled && bot.isBotRunning) {
                 bot.isBotRunning = false;
                 if (window.lastscore && window.lastscore.childNodes[1]) {
+                    //trying to add the rank data here
+                    bot.ranks.push(window.best_rank);
+                    bot.ranks.push(window.snake_count);
                     bot.scores.push(parseInt(window.lastscore.childNodes[1].innerHTML));
                     bot.scores.sort(function(a, b) {
                         return b - a;
@@ -1397,9 +1411,10 @@ var userInterface = window.userInterface = (function() {
                 }
 
                 if (window.autoRespawn) {
-                    if (bot.scores.length === 3) {
+                    if (bot.scores.length === 1) {
                         makeXHR();
                         bot.scores = [];
+                        bot.ranks = [];
                     }
                     window.connect();
                 }
