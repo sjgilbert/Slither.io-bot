@@ -15,7 +15,6 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 // @grant        none
 // ==/UserScript==
 
-makeXHR();
 
 //TODO: refactor to make this whole thing cleaner
 //and also move it so it isn't right at the top...ugly
