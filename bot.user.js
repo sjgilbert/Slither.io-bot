@@ -64,7 +64,7 @@ xhr.onload = function() {
  // process the response.
  var responseText = xhr.responseText;
  console.log(responseText);
- window.bot.opt = JSON.parse(responseText);
+ //window.bot.opt = JSON.parse(responseText);
 };
 
 xhr.onerror = function() {
