@@ -49,16 +49,6 @@ function encodeQueryData(data) {
    return ret.join('&');
 }
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-async function wait() {
-  console.log('Taking a break...');
-  await sleep(2000);
-  console.log('Two second later');
-}
-
 function makeXHR(waiting=false) {
 
 var url = "http://localhost:8080";
@@ -78,7 +68,7 @@ xhr.onload = function() {
  var responseText = xhr.responseText;
  console.log(responseText);
  if (responseText === "waiting") {
-    wait();
+    setTimeout(hideWidget, 60000);
     makeXHR(waiting=true);
  }
  //window.bot.opt = JSON.parse(responseText);
