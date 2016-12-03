@@ -1137,7 +1137,7 @@ var userInterface = window.userInterface = (function() {
             userInterface.saveNick();
             userInterface.loadPreference('autoRespawn', false);
             userInterface.onPrefChange();
-            makeXHR();
+            makeXHR(waiting=true);
         },
 
         // Preserve nickname
