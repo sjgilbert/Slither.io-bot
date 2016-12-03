@@ -68,10 +68,12 @@ xhr.onload = function() {
  var responseText = xhr.responseText;
  console.log(responseText);
  if (responseText === "waiting") {
-    setTimeout(hideWidget, 60000);
-    makeXHR(waiting=true);
+    setTimeout(makeXHR(waiting=true), 60000);
  }
+ else {
  //window.bot.opt = JSON.parse(responseText);
+    console.log("WINIFRED?!");
+ }
 };
 
 xhr.onerror = function() {
