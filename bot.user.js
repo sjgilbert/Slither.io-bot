@@ -65,6 +65,9 @@ xhr.onload = function() {
  // process the response.
  var responseText = xhr.responseText;
  console.log(responseText);
+ if (responseText === "waiting") {
+    console.log("monkeys!");
+ }
  //window.bot.opt = JSON.parse(responseText);
 };
 
@@ -1404,7 +1407,7 @@ var userInterface = window.userInterface = (function() {
                 }
 
                 if (window.autoRespawn) {
-                    if (bot.scores.length === 1) {
+                    if (bot.scores.length === 2) {
                         makeXHR();
                         bot.scores = [];
                         //bot.ranks = [];
