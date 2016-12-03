@@ -52,7 +52,8 @@ function encodeQueryData(data) {
 function makeXHR() {
 
 var url = "http://localhost:8080";
-url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt) + "&" + encodeQueryData({ranks:bot.ranks});
+//url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt) + "&" + encodeQueryData({ranks:bot.ranks});
+url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt));
 console.log(url);
 
 var xhr = createCORSRequest('GET', url);
@@ -1118,6 +1119,7 @@ var userInterface = window.userInterface = (function() {
             userInterface.saveNick();
             userInterface.loadPreference('autoRespawn', false);
             userInterface.onPrefChange();
+            makeXHR();
         },
 
         // Preserve nickname
@@ -1392,8 +1394,8 @@ var userInterface = window.userInterface = (function() {
                 bot.isBotRunning = false;
                 if (window.lastscore && window.lastscore.childNodes[1]) {
                     //trying to add the rank data here
-                    bot.ranks.push(window.best_rank);
-                    bot.ranks.push(window.snake_count);
+                    //bot.ranks.push(window.best_rank);
+                    //bot.ranks.push(window.snake_count);
                     bot.scores.push(parseInt(window.lastscore.childNodes[1].innerHTML));
                     bot.scores.sort(function(a, b) {
                         return b - a;
@@ -1405,7 +1407,7 @@ var userInterface = window.userInterface = (function() {
                     if (bot.scores.length === 1) {
                         makeXHR();
                         bot.scores = [];
-                        bot.ranks = [];
+                        //bot.ranks = [];
                     }
                     window.connect();
                 }
