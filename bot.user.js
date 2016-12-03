@@ -68,7 +68,7 @@ xhr.onload = function() {
  var responseText = xhr.responseText;
  console.log(responseText);
  if (responseText === "waiting") {
-    setTimeout(makeXHR(waiting=true), 60000);
+    setTimeout(function() {makeXHR(waiting=true);}, 60000);
  }
  else {
  //window.bot.opt = JSON.parse(responseText);
