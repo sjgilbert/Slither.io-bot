@@ -49,6 +49,15 @@ function encodeQueryData(data) {
    return ret.join('&');
 }
 
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}
+
 function makeXHR(waiting=false) {
 
 var url = "http://localhost:8080";
@@ -68,10 +77,11 @@ xhr.onload = function() {
  var responseText = xhr.responseText;
  console.log(responseText);
  if (responseText === "waiting") {
-    setTimeout(function() {makeXHR(waiting=true);}, 60000);
+    sleep(60000);
+    makeXHR(waiting=true);
  }
  else {
- //window.bot.opt = JSON.parse(responseText);
+    window.bot.opt = JSON.parse(responseText);
     console.log("WINIFRED?!");
  }
 };
