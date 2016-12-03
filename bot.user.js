@@ -53,7 +53,7 @@ function makeXHR() {
 
 var url = "http://localhost:8080";
 //url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt) + "&" + encodeQueryData({ranks:bot.ranks});
-url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt));
+url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt);
 console.log(url);
 
 var xhr = createCORSRequest('GET', url);
@@ -420,7 +420,7 @@ var bot = window.bot = (function() {
         collisionPoints: [],
         collisionAngles: [],
         scores: [],
-        ranks: [],
+       // ranks: [],
         foodTimeout: undefined,
         sectorBoxSide: 0,
         defaultAccel: 0,
