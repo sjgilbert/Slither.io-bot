@@ -49,11 +49,23 @@ function encodeQueryData(data) {
    return ret.join('&');
 }
 
-function makeXHR() {
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function wait() {
+  console.log('Taking a break...');
+  await sleep(2000);
+  console.log('Two second later');
+}
+
+function makeXHR(waiting=false) {
 
 var url = "http://localhost:8080";
 //url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt) + "&" + encodeQueryData({ranks:bot.ranks});
-url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt);
+if (!waiting) {
+    url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt);
+}
 console.log(url);
 
 var xhr = createCORSRequest('GET', url);
@@ -66,7 +78,8 @@ xhr.onload = function() {
  var responseText = xhr.responseText;
  console.log(responseText);
  if (responseText === "waiting") {
-    console.log("monkeys!");
+    wait();
+    makeXHR(waiting=true);
  }
  //window.bot.opt = JSON.parse(responseText);
 };
