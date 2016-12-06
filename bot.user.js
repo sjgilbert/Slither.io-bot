@@ -1416,7 +1416,7 @@ var userInterface = window.userInterface = (function() {
 
                 if (window.autoRespawn) {
                     if (window.wait) {
-                        makeHXR();
+                        makeXHR();
                         bot.scores = [];
                     } else if (bot.scores.length === 2) {
                         makeXHR();
