@@ -54,9 +54,10 @@ function makeXHR() {
 
 var url = "http://localhost:8080";
 //url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt) + "&" + encodeQueryData({ranks:bot.ranks});
-//if (!window.wait) {
+if (!window.wait) {
     url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt);
-//}
+}
+console.log("The URL: ");
 console.log(url);
 
 var xhr = createCORSRequest('GET', url);
@@ -75,7 +76,7 @@ xhr.onload = function() {
  }
  else {
     window.wait = false;
-//    window.bot.opt = JSON.parse(responseText);
+    window.bot.opt = JSON.parse(responseText);
  }
 };
 
