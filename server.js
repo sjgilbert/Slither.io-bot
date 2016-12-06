@@ -39,7 +39,7 @@ function handleRequest(req, res){
             var query = split_url.slice(-1)[0];
             var parsed_query = querystring.parse(query);
             agents_completed.push(parsed_query);
-            if (opts_queue.length === 0 && agents_completed.length === 3) {
+            if (opts_queue.length === 0 && agents_completed.length === 10) {
                 writeGenerationToFile();
                 generateNextGeneration();
                 res.writeHead(200, {"Content-Type": "application/json"});
