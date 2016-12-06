@@ -15,8 +15,6 @@ var agents_completed = [];
 // initialize the opts_queue
 var data = fs.readFileSync('./saved_gens.txt', 'utf8');
 var lines = data.split("\n");
-console.log("LINES: ");
-console.log(lines);
 if (lines.length > 1) {
     var opts_queue = JSON.parse(lines.slice(-2)[0]);
 } else {
@@ -84,18 +82,14 @@ function writeGenerationToFile() {
 
 function generateNextGeneration() {
     var new_generation = [];
-    console.log("agents pre-fitness:");
-    console.log(agents_completed);
     assign_fitness(agents_completed);
-    console.log("agents post-fitness:");
-    console.log(agents_completed);
     agents_completed.sort(compare);
     console.log("sorted agents:");
     console.log(agents_completed);
     //new_generation.concat(select_elites(agents_completed));
     var parent_sets = create_parent_sets(agents_completed);
-    for (parents in parent_sets) {
-        new_generation.push(generate_child(parents));
+    for (var i=0;i<parent_sets.length;i++) {
+        new_generation.push(generate_child(parent_sets[i]));
     }
     opts_queue = new_generation;
     console.log("new generation:");
@@ -114,7 +108,7 @@ function assign_fitness(generation) {
     var total = 0;
     //first find the averages
     for (var i=0; i<generation.length; i++) {
-        var avg = average(generation[i]["scores"]);
+        var avg = average(generation[i]["scores"].split(','));
         generation[i]["fitness"] = avg;
         total += avg;
     }
@@ -144,23 +138,24 @@ function create_parent_sets(generation) {
 
 function select_parent(generation) {
     var rand_num = Math.random();
-    for (agent in generation) {
-        if (rand_num > agent["prob"]) {
+    for (var i=0;i<generation.length;i++) {
+        if (rand_num > generation[i]["prob"]) {
             continue;
         } else {
-            return agent;
+            return generation[i];
         }
     }
 }
 
 function generate_child(parents) {
-    for (par in parents) {
-        delete par["fitness"];
-        delete par["prob"];
-        delete par["scores"];
+    for (var i=0;i<parents.length;i++) {
+        delete parents[i]["fitness"];
+        delete parents[i]["prob"];
+        delete parents[i]["scores"];
     }
     var child = crossover(parents);
     child = mutate(child);
+    return child;
 }
 
 function mutate(child) {
@@ -171,27 +166,40 @@ function mutate(child) {
 
 function crossover(parents) {
     var par1 = JSON.stringify(parents[0]).split(',');
+    console.log("par1:");
+    console.log(par1);
     var par2 = JSON.stringify(parents[1]).split(',');
+    console.log("par2:");
+    console.log(par2);
     var divide_point = Math.floor(par1.length/2);
     var child = par1.slice(0,divide_point);
-    child.concat(par2.slice(divide_point));
+    console.log("child so far:");
+    console.log(child);
+    console.log("what is being added");
+    console.log(par2.slice(divide_point));
+    child = child.concat(par2.slice(divide_point));
+    console.log("completed child list");
+    console.log(child);
     child = child.join();
+    console.log("child after join");
+    console.log(child);
     return JSON.parse(child);
 }
 
 function average(scores) {
     var total = 0;
     for(var i = 0; i < scores.length; i++) {
-        total += scores[i];
+        total += parseInt(scores[i]);
     }
     var avg = total / scores.length;
+    return avg;
 }
 
 function compare(a,b) {
   if (a.prob < b.prob)
-    return 1;
-  if (a.prob > b.prob)
     return -1;
+  if (a.prob > b.prob)
+    return 1;
   return 0;
 }
 
