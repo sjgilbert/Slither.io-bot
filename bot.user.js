@@ -1406,6 +1406,7 @@ var userInterface = window.userInterface = (function() {
                 window.onmousemove = function() {};
                 bot.isBotRunning = true;
                 bot.go();
+                console.log("dummy");
             } else if (bot.isBotEnabled && bot.isBotRunning) {
                 bot.isBotRunning = false;
                 if (window.lastscore && window.lastscore.childNodes[1]) {
