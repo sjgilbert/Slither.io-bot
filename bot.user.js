@@ -16,6 +16,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 // ==/UserScript==
 
 window.wait = true;
+window.timer = 0;
 
 //TODO: refactor to make this whole thing cleaner
 //and also move it so it isn't right at the top...ugly
@@ -53,9 +54,9 @@ function encodeQueryData(data) {
 function makeXHR() {
 
 var url = "http://localhost:8080";
-//url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt) + "&" + encodeQueryData({ranks:bot.ranks});
 if (!window.wait) {
-    url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt);
+    url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt) + "&" + encodeQueryData({ranks:bot.ranks}) + "&" + encodeQueryData({times:bot.times});
+    //url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt);
 }
 console.log("The URL: ");
 console.log(url);
@@ -432,6 +433,7 @@ var bot = window.bot = (function() {
         collisionAngles: [],
         scores: [],
        // ranks: [],
+       // times: [],
         foodTimeout: undefined,
         sectorBoxSide: 0,
         defaultAccel: 0,
@@ -1131,6 +1133,7 @@ var userInterface = window.userInterface = (function() {
             userInterface.loadPreference('autoRespawn', false);
             userInterface.onPrefChange();
             makeXHR();
+            window.timer = performance.now();
         },
 
         // Preserve nickname
@@ -1405,8 +1408,9 @@ var userInterface = window.userInterface = (function() {
                 bot.isBotRunning = false;
                 if (window.lastscore && window.lastscore.childNodes[1]) {
                     //trying to add the rank data here
-                    //bot.ranks.push(window.best_rank);
-                    //bot.ranks.push(window.snake_count);
+                    bot.ranks.push(window.best_rank);
+                    bot.ranks.push(window.snake_count);
+                    bot.times.push(performance.now()-window.timer);
                     bot.scores.push(parseInt(window.lastscore.childNodes[1].innerHTML));
                     bot.scores.sort(function(a, b) {
                         return b - a;
@@ -1418,12 +1422,16 @@ var userInterface = window.userInterface = (function() {
                     if (window.wait) {
                         makeXHR();
                         bot.scores = [];
+                        bot.ranks = [];
+                        bot.times = [];
                     } else if (bot.scores.length === 2) {
                         makeXHR();
                         bot.scores = [];
-                        //bot.ranks = [];
+                        bot.ranks = [];
+                        bot.times = [];
                     }
                     window.connect();
+                    window.timer = performance.now();
                 }
             }
 
