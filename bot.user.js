@@ -70,6 +70,7 @@ xhr.onload = function() {
  console.log("RESPONSE TEXT: ");
  console.log(responseText);
  if (responseText === "wait") {
+    console.log('triggered');
     window.wait = true;
  }
  else {
