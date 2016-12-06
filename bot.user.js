@@ -15,7 +15,7 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 // @grant        none
 // ==/UserScript==
 
-window.wait = false;
+window.wait = true;
 
 //TODO: refactor to make this whole thing cleaner
 //and also move it so it isn't right at the top...ugly
@@ -70,7 +70,7 @@ xhr.onload = function() {
  console.log("RESPONSE TEXT: ");
  console.log(responseText);
  if (responseText === "wait") {
-    console.log('triggered');
+    console.log('wait triggered');
     window.wait = true;
  }
  else {
