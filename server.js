@@ -152,6 +152,8 @@ function generate_child(parents) {
         delete parents[i]["fitness"];
         delete parents[i]["prob"];
         delete parents[i]["scores"];
+        delete parents[i]["ranks"];
+        delete parents[i]["times"];
     }
     var child = crossover(parents);
     child = mutate(child);
