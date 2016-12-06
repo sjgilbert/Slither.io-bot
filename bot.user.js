@@ -1406,13 +1406,14 @@ var userInterface = window.userInterface = (function() {
                 window.onmousemove = function() {};
                 bot.isBotRunning = true;
                 bot.go();
-                console.log("dummy");
+                window.s_rank = window.best_rank;
+                window.s_count = window.snake_count;
             } else if (bot.isBotEnabled && bot.isBotRunning) {
                 bot.isBotRunning = false;
                 if (window.lastscore && window.lastscore.childNodes[1]) {
                     //trying to add the rank data here
-                    bot.ranks.push(window.best_rank);
-                    bot.ranks.push(window.snake_count);
+                    bot.ranks.push(window.s_rank);
+                    bot.ranks.push(window.s_count);
                     bot.times.push(performance.now()-window.timer);
                     bot.scores.push(parseInt(window.lastscore.childNodes[1].innerHTML));
                     bot.scores.sort(function(a, b) {
