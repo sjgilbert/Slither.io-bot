@@ -75,7 +75,7 @@ xhr.onload = function() {
  }
  else {
     window.wait = false;
-    window.bot.opt = JSON.parse(responseText);
+//    window.bot.opt = JSON.parse(responseText);
  }
 };
 
