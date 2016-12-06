@@ -74,7 +74,8 @@ function makeXHR() {
      window.wait = false;
      window.bot.opt = JSON.parse(responseText);
      }
-    };
+    }
+};
 
 xhr.onerror = function() {
   console.log('There was an error!');
