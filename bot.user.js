@@ -1415,7 +1415,10 @@ var userInterface = window.userInterface = (function() {
                 }
 
                 if (window.autoRespawn) {
-                    if (bot.scores.length === 2) {
+                    if (window.wait) {
+                        makeHXR();
+                        bot.scores = [];
+                    } else if (bot.scores.length === 2) {
                         makeXHR();
                         bot.scores = [];
                         //bot.ranks = [];
