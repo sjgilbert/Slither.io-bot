@@ -1133,6 +1133,8 @@ var userInterface = window.userInterface = (function() {
             userInterface.loadPreference('autoRespawn', false);
             userInterface.onPrefChange();
             makeXHR();
+            window.bot.ranks = [];
+            window.bot.times = [];
             window.timer = performance.now();
         },
 
