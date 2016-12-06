@@ -1406,8 +1406,12 @@ var userInterface = window.userInterface = (function() {
                 window.onmousemove = function() {};
                 bot.isBotRunning = true;
                 bot.go();
-                window.s_rank = window.best_rank;
-                window.s_count = window.snake_count;
+                if (window.best_rank > 0 && window.best_rank < 999999999) {
+                    window.s_rank = window.best_rank;
+                }
+                if (window.snake_count > 0 && window.snake_count < 999999999) {
+                    window.s_count = window.snake_count;
+                }
             } else if (bot.isBotEnabled && bot.isBotRunning) {
                 bot.isBotRunning = false;
                 if (window.lastscore && window.lastscore.childNodes[1]) {
