@@ -15,8 +15,6 @@ file, You can obtain one at http://mozilla.org/MPL/2.0/.
 // @grant        none
 // ==/UserScript==
 
-window.wait = false;
-
 
 //TODO: refactor to make this whole thing cleaner
 //and also move it so it isn't right at the top...ugly
@@ -51,30 +49,41 @@ function encodeQueryData(data) {
    return ret.join('&');
 }
 
-function makeXHR() {
-
-    var url = "http://localhost:8080";
-    //url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt) + "&" + encodeQueryData({ranks:bot.ranks});
-    if (!window.wait) {
-        url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt);
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
     }
-    console.log(url);
+  }
+}
 
-    var xhr = createCORSRequest('GET', url);
-    if (!xhr) {
-      throw new Error('CORS not supported');
-    }
+function makeXHR(waiting=false) {
 
-    xhr.onload = function() {
-     // process the response.
-     var responseText = xhr.responseText;
-     if (responseText === 'wait') {
-        window.wait = true;   
-     } else {
-     window.wait = false;
-     window.bot.opt = JSON.parse(responseText);
-     }
-    }
+var url = "http://localhost:8080";
+//url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt) + "&" + encodeQueryData({ranks:bot.ranks});
+if (!waiting) {
+    url = url + "?" + encodeQueryData({scores:bot.scores}) + "&" + encodeQueryData(bot.opt);
+}
+console.log(url);
+
+var xhr = createCORSRequest('GET', url);
+if (!xhr) {
+  throw new Error('CORS not supported');
+}
+
+xhr.onload = function() {
+ // process the response.
+ var responseText = xhr.responseText;
+ console.log(responseText);
+ if (responseText === "waiting") {
+    sleep(60000);
+    makeXHR(waiting=true);
+ }
+ else {
+    window.bot.opt = JSON.parse(responseText);
+    console.log("WINIFRED?!");
+ }
 };
 
 xhr.onerror = function() {
@@ -1128,7 +1137,7 @@ var userInterface = window.userInterface = (function() {
             userInterface.saveNick();
             userInterface.loadPreference('autoRespawn', false);
             userInterface.onPrefChange();
-            makeXHR();
+            makeXHR(waiting=true);
         },
 
         // Preserve nickname
