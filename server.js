@@ -40,8 +40,6 @@ function handleRequest(req, res){
         if (split_url.length > 1) {
             var query = split_url.slice(-1)[0];
             var parsed_query = querystring.parse(query);
-            console.log("PARSED QUERY: ");
-            console.log(parsed_query);
             agents_completed.push(parsed_query);
             if (opts_queue.length === 0 && agents_completed.length === 3) {
                 writeGenerationToFile();
@@ -53,8 +51,6 @@ function handleRequest(req, res){
             } else if (opts_queue.length > 0) {
                 res.writeHead(200, {"Content-Type": "application/json"});
                 var ret = opts_queue.pop();
-                console.log("QUEUE LENGTH: ");
-                console.log(opts_queue.length);
                 res.end(JSON.stringify(ret));
                 return;
             } else {
@@ -66,8 +62,6 @@ function handleRequest(req, res){
         } else if (opts_queue.length > 0) {
                 res.writeHead(200, {"Content-Type": "application/json"});
                 var ret = opts_queue.pop();
-                console.log("QUEUE LENGTH: ");
-                console.log(opts_queue.length);
                 res.end(JSON.stringify(ret));
                 return;
         } else {
@@ -89,15 +83,117 @@ function writeGenerationToFile() {
 }
 
 function generateNextGeneration() {
-    opts_queue = agents_completed;
-    for (var i=0; i<opts_queue.length; i++) {
-        delete opts_queue[i]["scores"];
+    var new_generation = [];
+    console.log("agents pre-fitness:");
+    console.log(agents_completed);
+    assign_fitness(agents_completed);
+    console.log("agents post-fitness:");
+    console.log(agents_completed);
+    agents_completed.sort(compare);
+    console.log("sorted agents:");
+    console.log(agents_completed);
+    //new_generation.concat(select_elites(agents_completed));
+    var parent_sets = create_parent_sets(agents_completed);
+    for (parents in parent_sets) {
+        new_generation.push(generate_child(parents));
     }
-        console.log("NEW GENERATION: ");
-        console.log(opts_queue);
+    opts_queue = new_generation;
+    console.log("new generation:");
+    console.log(new_generation);
     agents_completed = [];
+    //opts_queue = agents_completed;
+    //for (var i=0; i<opts_queue.length; i++) {
+    //    delete opts_queue[i]["scores"];
+    //}
+    //    console.log("NEW GENERATION: ");
+    //    console.log(opts_queue);
+    //agents_completed = [];
 }
 
+function assign_fitness(generation) {
+    var total = 0;
+    //first find the averages
+    for (var i=0; i<generation.length; i++) {
+        var avg = average(generation[i]["scores"]);
+        generation[i]["fitness"] = avg;
+        total += avg;
+    }
+    var run_sum = 0;
+    //then give each element a number value for random selection
+    for (var i=0; i<generation.length; i++) {
+        generation[i]["prob"] = run_sum + generation[i]["fitness"] / total;
+        run_sum += generation[i]["fitness"] / total;
+    }
+}
+
+//function select_elites(generation) {
+    //TODO: create this eventually
+//}
+
+//TODO: fix so that same agent cant be both parents
+function create_parent_sets(generation) {
+    var ret = [];
+    for (var i=0; i<10; i++) {
+        var parent_set = []; 
+        parent_set.push(select_parent(generation));
+        parent_set.push(select_parent(generation));
+        ret.push(parent_set);
+    }
+    return ret;
+}
+
+function select_parent(generation) {
+    var rand_num = Math.random();
+    for (agent in generation) {
+        if (rand_num > agent["prob"]) {
+            continue;
+        } else {
+            return agent;
+        }
+    }
+}
+
+function generate_child(parents) {
+    for (par in parents) {
+        delete par["fitness"];
+        delete par["prob"];
+        delete par["scores"];
+    }
+    var child = crossover(parents);
+    child = mutate(child);
+}
+
+function mutate(child) {
+    //TODO:fill me in for real
+    child["radiusAvoidSize"] = child["radiusAvoidSize"] - 1;
+    return child;
+}
+
+function crossover(parents) {
+    var par1 = JSON.stringify(parents[0]).split(',');
+    var par2 = JSON.stringify(parents[1]).split(',');
+    var divide_point = Math.floor(par1.length/2);
+    var child = par1.slice(0,divide_point);
+    child.concat(par2.slice(divide_point));
+    child = child.join();
+    return JSON.parse(child);
+}
+
+function average(scores) {
+    var total = 0;
+    for(var i = 0; i < scores.length; i++) {
+        total += scores[i];
+    }
+    var avg = total / scores.length;
+}
+
+function compare(a,b) {
+  if (a.prob < b.prob)
+    return 1;
+  if (a.prob > b.prob)
+    return -1;
+  return 0;
+}
 
 //Create a server
 var server = http.createServer(handleRequest);
