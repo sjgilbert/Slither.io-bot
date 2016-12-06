@@ -23,8 +23,6 @@ if (lines.length > 1) {
 for (var i=0; i<opts_queue.length; i++) {
     delete opts_queue[i]["scores"];
 }
-console.log("OPTS QUEUE INTITIAL");
-console.log(opts_queue);
 
 //We need a function which handles requests and send response
 function handleRequest(req, res){
@@ -76,7 +74,7 @@ function writeGenerationToFile() {
         if(err) {
             return console.log(err);
         }
-        console.log("file saved");
+        console.log("generation saved");
     });
 }
 
@@ -84,8 +82,6 @@ function generateNextGeneration() {
     var new_generation = [];
     assign_fitness(agents_completed);
     agents_completed.sort(compare);
-    console.log("sorted agents:");
-    console.log(agents_completed);
     //new_generation.concat(select_elites(agents_completed));
     var parent_sets = create_parent_sets(agents_completed);
     for (var i=0;i<parent_sets.length;i++) {
@@ -168,23 +164,11 @@ function mutate(child) {
 
 function crossover(parents) {
     var par1 = JSON.stringify(parents[0]).split(',');
-    console.log("par1:");
-    console.log(par1);
     var par2 = JSON.stringify(parents[1]).split(',');
-    console.log("par2:");
-    console.log(par2);
     var divide_point = Math.floor(par1.length/2);
     var child = par1.slice(0,divide_point);
-    console.log("child so far:");
-    console.log(child);
-    console.log("what is being added");
-    console.log(par2.slice(divide_point));
     child = child.concat(par2.slice(divide_point));
-    console.log("completed child list");
-    console.log(child);
     child = child.join();
-    console.log("child after join");
-    console.log(child);
     return JSON.parse(child);
 }
 
