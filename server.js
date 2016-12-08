@@ -81,8 +81,8 @@ function writeGenerationToFile() {
 function generateNextGeneration() {
     var new_generation = [];
     assign_fitness(agents_completed);
-    agents_completed.sort(compare);
-    //new_generation.concat(select_elites(agents_completed));
+    agents_completed.sort(compareProbs);
+    new_generation = new_generation.concat(select_elites(agents_completed));
     var parent_sets = create_parent_sets(agents_completed);
     for (var i=0;i<parent_sets.length;i++) {
         new_generation.push(generate_child(parent_sets[i]));
@@ -91,13 +91,6 @@ function generateNextGeneration() {
     console.log("new generation:");
     console.log(new_generation);
     agents_completed = [];
-    //opts_queue = agents_completed;
-    //for (var i=0; i<opts_queue.length; i++) {
-    //    delete opts_queue[i]["scores"];
-    //}
-    //    console.log("NEW GENERATION: ");
-    //    console.log(opts_queue);
-    //agents_completed = [];
 }
 
 function assign_fitness(generation) {
@@ -116,14 +109,17 @@ function assign_fitness(generation) {
     }
 }
 
-//function select_elites(generation) {
-    //TODO: create this eventually
-//}
+function select_elites(generation) {
+    generation = generation.sort(compareFitness);
+    console.log("ELITES:");
+    console.log(generation.slice(0,2));
+    return generation.slice(0,2);
+}
 
 //TODO: fix so that same agent cant be both parents
 function create_parent_sets(generation) {
     var ret = [];
-    for (var i=0; i<10; i++) {
+    for (var i=0; i<8; i++) {
         var parent_set = []; 
         parent_set.push(select_parent(generation));
         parent_set.push(select_parent(generation));
@@ -136,6 +132,7 @@ function select_parent(generation) {
     var rand_num = Math.random();
     for (var i=0;i<generation.length;i++) {
         if (rand_num > generation[i]["prob"]) {
+            //(randInt(size-1) + i + 1) % generation.length
             continue;
         } else {
             return generation[i];
@@ -157,19 +154,209 @@ function generate_child(parents) {
 }
 
 function mutate(child) {
-    //TODO:fill me in for real
-    child["radiusAvoidSize"] = child["radiusAvoidSize"] - 1;
+    for (var i=0; i<child.length; i++) {
+        var rand = Math.random();
+        if (rand < 1/13) {
+            child[i] = mutation(child, "major", i);
+        } else if (rand < 2/13) {
+            child[i] = mutation(child, "minor", i);
+        }
+    }
     return child;
+}
+
+function mutation(child, type, index) {
+    switch(index) {
+    //targetFps: range:30,30
+    case 0:
+        if (type === "major") {
+            return 30;
+        } else {
+            return 30;
+        }
+        break;
+    //arcSize: range:0,2*Math.PI
+    case 1:
+        if (type === "major") {
+            return getRandomArbitrary(0,2*Math.PI);
+        } else {
+            var bool = Math.random();
+            if (bool > .5) {
+                return Math.abs((child[index] + 1/8*Math.PI) % (2*Math.PI))
+            } else {
+                return Math.abs((child[index] - 1/8*Math.PI) % (2*Math.PI))
+            }
+        }
+        break;
+    //radiusMult: range:0,50
+    case 2:
+        if (type === "major") {
+            return getRandomInt(0,50);
+        } else {
+            var bool = Math.random();
+            if (bool > .5) {
+                return Math.abs((child[index] + 3) % 50)
+            } else {
+                return Math.abs((child[index] - 3) % 50)
+            }
+        }
+        break;
+    //foodAccelSize: range:2,100
+    case 3:
+        if (type === "major") {
+            return getRandomInt(2,100);
+        } else {
+            var bool = Math.random();
+            if (bool > .5) {
+                return Math.abs((child[index] + 8) % 100)
+            } else {
+                return Math.abs((child[index] - 8) % 100)
+            }
+        }
+        break;
+    //foodAccelAngle: range:0,2*Math.PI
+    case 4:
+        if (type === "major") {
+            return getRandomArbitrary(0,2*Math.PI);
+        } else {
+            var bool = Math.random();
+            if (bool > .5) {
+                return Math.abs((child[index] + 1/8*Math.PI) % (2*Math.PI))
+            } else {
+                return Math.abs((child[index] - 1/8*Math.PI) % (2*Math.PI))
+            }
+        }
+        break;
+    //foodFrames: range:0,15
+    case 5:
+        if (type === "major") {
+            return getRandomInt(0,15);
+        } else {
+            var bool = Math.random();
+            if (bool > .5) {
+                return Math.abs((child[index] + 1) % 15)
+            } else {
+                return Math.abs((child[index] - 1) % 15)
+            }
+        }
+        break;
+    //foodRoundSize: range:1,20
+    case 6:
+        if (type === "major") {
+            return getRandomInt(1,20);
+        } else {
+            var bool = Math.random();
+            if (bool > .5) {
+                return Math.abs((child[index] + 2) % 20)
+            } else {
+                return Math.abs((child[index] - 2) % 20)
+            }
+        }
+        break;
+    //foodRoundAngle: range:0,2*Math.PI
+    case 7:
+        if (type === "major") {
+            return getRandomArbitrary(0,2*Math.PI);
+        } else {
+            var bool = Math.random();
+            if (bool > .5) {
+                return Math.abs((child[index] + 1/8*Math.PI) % (2*Math.PI))
+            } else {
+                return Math.abs((child[index] - 1/8*Math.PI) % (2*Math.PI))
+            }
+        }
+        break;
+    //foodSmallSize: range:2,30
+    case 8:
+        if (type === "major") {
+            return getRandomInt(2,30);
+        } else {
+            var bool = Math.random();
+            if (bool > .5) {
+                return Math.abs((child[index] + 2) % 30)
+            } else {
+                return Math.abs((child[index] - 2) % 30)
+            }
+        }
+        break;
+    //rearHeadAngle: range:0,2*Math.PI
+    case 9:
+        if (type === "major") {
+            return getRandomArbitrary(0,2*Math.PI);
+        } else {
+            var bool = Math.random();
+            if (bool > .5) {
+                return Math.abs((child[index] + 1/8*Math.PI) % (2*Math.PI))
+            } else {
+                return Math.abs((child[index] - 1/8*Math.PI) % (2*Math.PI))
+            }
+        }
+        break;
+    //rearHeadDir: range:0,2*Math.PI
+    case 10:
+        if (type === "major") {
+            return getRandomArbitrary(0,2*Math.PI);
+        } else {
+            var bool = Math.random();
+            if (bool > .5) {
+                return Math.abs((child[index] + 1/8*Math.PI) % (2*Math.PI))
+            } else {
+                return Math.abs((child[index] - 1/8*Math.PI) % (2*Math.PI))
+            }
+        }
+        break;
+    //radiusApproachSize: range:1,40
+    case 11:
+        if (type === "major") {
+            return getRandomInt(1,40);
+        } else {
+            var bool = Math.random();
+            if (bool > .5) {
+                return Math.abs((child[index] + 1) % 40)
+            } else {
+                return Math.abs((child[index] - 1) % 40)
+            }
+        }
+        break;
+    //radiusAvoidSize: range:5,100
+    case 12:
+        if (type === "major") {
+            return getRandomInt(5,100);
+        } else {
+            var bool = Math.random();
+            if (bool > .5) {
+                return Math.abs((child[index] + 5) % 100)
+            } else {
+                return Math.abs((child[index] - 5) % 100)
+            }
+        }
+        break;
+    }
 }
 
 function crossover(parents) {
     var par1 = JSON.stringify(parents[0]).split(',');
     var par2 = JSON.stringify(parents[1]).split(',');
-    var divide_point = Math.floor(par1.length/2);
+    var divide_point = getRandomInt(0,13);
     var child = par1.slice(0,divide_point);
     child = child.concat(par2.slice(divide_point));
     child = child.join();
     return JSON.parse(child);
+}
+
+/**
+ * Returns a random integer between min (inclusive) and max (inclusive)
+ * Using Math.round() will give you a non-uniform distribution!
+ */
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+/**
+ * Returns a random number between min (inclusive) and max (exclusive)
+ */
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
 }
 
 function average(scores) {
@@ -181,11 +368,19 @@ function average(scores) {
     return avg;
 }
 
-function compare(a,b) {
+function compareProbs(a,b) {
   if (a.prob < b.prob)
     return -1;
   if (a.prob > b.prob)
     return 1;
+  return 0;
+}
+
+function compareFitness(a,b) {
+  if (a.fitness < b.fitness)
+    return 1;
+  if (a.fitness > b.fitness)
+    return -1;
   return 0;
 }
 
