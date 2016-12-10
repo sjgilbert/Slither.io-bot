@@ -84,7 +84,7 @@ function generateNextGeneration() {
     var new_generation = [];
     assign_fitness(agents_completed);
     agents_completed.sort(compareProbs);
-    new_generation = new_generation.concat(select_elites(agents_completed));
+    //new_generation = new_generation.concat(select_elites(agents_completed));
     var parent_sets = create_parent_sets(agents_completed);
     for (var i=0;i<parent_sets.length;i++) {
         new_generation.push(generate_child(parent_sets[i]));
@@ -121,10 +121,17 @@ function select_elites(generation) {
 //TODO: fix so that same agent cant be both parents
 function create_parent_sets(generation) {
     var ret = [];
-    for (var i=0; i<8; i++) {
+    for (var i=0; i<10; i++) {
         var parent_set = []; 
-        parent_set.push(select_parent(generation));
-        parent_set.push(select_parent(generation));
+        var chancer = Math.random();
+        if (chancer > .5) {
+            parent_set.push(select_parent(generation));
+            parent_set.push(select_parent(generation));
+        } else {
+            console.log('random parent selected');
+            parent_set.push(select_parent(generation));
+            parent_set.push(generation[getRandomInt(0,9)]);
+        }
         ret.push(parent_set);
     }
     return ret;
@@ -156,6 +163,8 @@ function generate_child(parents) {
 }
 
 function mutate(child) {
+    console.log('child pre-mutation:');
+    console.log(child);
     for (var i=0; i<child.length; i++) {
         var rand = Math.random();
         if (rand < 1/13) {
@@ -164,6 +173,8 @@ function mutate(child) {
             child[i] = mutation(child, "minor", i);
         }
     }
+    console.log('child post-mutation:');
+    console.log(child);
     return child;
 }
 
