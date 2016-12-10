@@ -167,9 +167,9 @@ function mutate(child) {
     console.log(child);
     for (var i=0; i<child.length; i++) {
         var rand = Math.random();
-        if (rand < 1/13) {
+        if (rand < 1/10) {
             child[i] = mutation(child, "major", i);
-        } else if (rand < 2/13) {
+        } else if (rand < 3/10) {
             child[i] = mutation(child, "minor", i);
         }
     }
@@ -182,6 +182,7 @@ function mutation(child, type, index) {
     switch(index) {
     //targetFps: range:30,30
     case 0:
+        console.log('0');
         if (type === "major") {
             return 30;
         } else {
@@ -190,6 +191,7 @@ function mutation(child, type, index) {
         break;
     //arcSize: range:0,2*Math.PI
     case 1:
+        console.log('1');
         if (type === "major") {
             return getRandomArbitrary(0,2*Math.PI);
         } else {
@@ -203,6 +205,7 @@ function mutation(child, type, index) {
         break;
     //radiusMult: range:0,50
     case 2:
+        console.log('2');
         if (type === "major") {
             return getRandomInt(0,50);
         } else {
@@ -216,6 +219,7 @@ function mutation(child, type, index) {
         break;
     //foodAccelSize: range:2,100
     case 3:
+        console.log('3');
         if (type === "major") {
             return getRandomInt(2,100);
         } else {
@@ -229,6 +233,7 @@ function mutation(child, type, index) {
         break;
     //foodAccelAngle: range:0,2*Math.PI
     case 4:
+        console.log('4');
         if (type === "major") {
             return getRandomArbitrary(0,2*Math.PI);
         } else {
@@ -242,6 +247,7 @@ function mutation(child, type, index) {
         break;
     //foodFrames: range:0,15
     case 5:
+        console.log('5');
         if (type === "major") {
             return getRandomInt(0,15);
         } else {
@@ -255,6 +261,7 @@ function mutation(child, type, index) {
         break;
     //foodRoundSize: range:1,20
     case 6:
+        console.log('6');
         if (type === "major") {
             return getRandomInt(1,20);
         } else {
@@ -268,6 +275,7 @@ function mutation(child, type, index) {
         break;
     //foodRoundAngle: range:0,2*Math.PI
     case 7:
+        console.log('7');
         if (type === "major") {
             return getRandomArbitrary(0,2*Math.PI);
         } else {
@@ -281,6 +289,7 @@ function mutation(child, type, index) {
         break;
     //foodSmallSize: range:2,30
     case 8:
+        console.log('8');
         if (type === "major") {
             return getRandomInt(2,30);
         } else {
@@ -294,6 +303,7 @@ function mutation(child, type, index) {
         break;
     //rearHeadAngle: range:0,2*Math.PI
     case 9:
+        console.log('9');
         if (type === "major") {
             return getRandomArbitrary(0,2*Math.PI);
         } else {
@@ -307,6 +317,7 @@ function mutation(child, type, index) {
         break;
     //rearHeadDir: range:0,2*Math.PI
     case 10:
+        console.log('10');
         if (type === "major") {
             return getRandomArbitrary(0,2*Math.PI);
         } else {
@@ -320,6 +331,7 @@ function mutation(child, type, index) {
         break;
     //radiusApproachSize: range:1,40
     case 11:
+        console.log('11');
         if (type === "major") {
             return getRandomInt(1,40);
         } else {
@@ -333,6 +345,7 @@ function mutation(child, type, index) {
         break;
     //radiusAvoidSize: range:5,100
     case 12:
+        console.log('12');
         if (type === "major") {
             return getRandomInt(5,100);
         } else {
