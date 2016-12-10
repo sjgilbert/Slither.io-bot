@@ -1432,7 +1432,7 @@ var userInterface = window.userInterface = (function() {
                         bot.scores = [];
                         bot.ranks = [];
                         bot.times = [];
-                    } else if (bot.scores.length === 10) {
+                    } else if (bot.scores.length === 5) {
                         makeXHR();
                         bot.scores = [];
                         bot.ranks = [];
