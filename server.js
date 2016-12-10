@@ -22,6 +22,8 @@ if (lines.length > 1) {
 }
 for (var i=0; i<opts_queue.length; i++) {
     delete opts_queue[i]["scores"];
+    delete opts_queue[i]["ranks"];
+    delete opts_queue[i]["times"];
 }
 
 //We need a function which handles requests and send response
