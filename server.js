@@ -307,6 +307,7 @@ function mutation(child, type, att) {
         break;
     //rearHeadDir: range:0,2*Math.PI
     case 'rearHeadDir':
+        if (type === "major") {
             return getRandomArbitrary(0,2*Math.PI);
         } else {
             var bool = Math.random();
