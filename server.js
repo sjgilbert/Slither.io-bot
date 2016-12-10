@@ -84,7 +84,7 @@ function generateNextGeneration() {
     var new_generation = [];
     assign_fitness(agents_completed);
     agents_completed.sort(compareProbs);
-    //new_generation = new_generation.concat(select_elites(agents_completed));
+    new_generation = new_generation.concat(select_elites(agents_completed));
     var parent_sets = create_parent_sets(agents_completed);
     for (var i=0;i<parent_sets.length;i++) {
         new_generation.push(generate_child(parent_sets[i]));
@@ -114,21 +114,20 @@ function assign_fitness(generation) {
 function select_elites(generation) {
     generation = generation.sort(compareFitness);
     console.log("ELITES:");
-    console.log(generation.slice(0,2));
-    return generation.slice(0,2);
+    console.log(generation.slice(0,1));
+    return generation.slice(0,1);
 }
 
 //TODO: fix so that same agent cant be both parents
 function create_parent_sets(generation) {
     var ret = [];
-    for (var i=0; i<10; i++) {
+    for (var i=0; i<9; i++) {
         var parent_set = []; 
         var chancer = Math.random();
         if (chancer > .5) {
             parent_set.push(select_parent(generation));
             parent_set.push(select_parent(generation));
         } else {
-            console.log('random parent selected');
             parent_set.push(select_parent(generation));
             parent_set.push(generation[getRandomInt(0,9)]);
         }
@@ -165,12 +164,12 @@ function generate_child(parents) {
 function mutate(child) {
     console.log('child pre-mutation:');
     console.log(child);
-    for (var i=0; i<child.length; i++) {
+    for (var att in child) {
         var rand = Math.random();
-        if (rand < 1/13) {
-            child[i] = mutation(child, "major", i);
-        } else if (rand < 2/13) {
-            child[i] = mutation(child, "minor", i);
+        if (rand < 1/10) {
+            child[att] = mutation(child, "major", att);
+        } else if (rand < 3/10) {
+            child[att] = mutation(child, "minor", att);
         }
     }
     console.log('child post-mutation:');
@@ -178,10 +177,11 @@ function mutate(child) {
     return child;
 }
 
-function mutation(child, type, index) {
-    switch(index) {
+function mutation(child, type, att) {
+    console.log(att);
+    switch(att) {
     //targetFps: range:30,30
-    case 0:
+    case 'targetFps':
         if (type === "major") {
             return 30;
         } else {
@@ -189,158 +189,157 @@ function mutation(child, type, index) {
         }
         break;
     //arcSize: range:0,2*Math.PI
-    case 1:
+    case 'arcSize':
         if (type === "major") {
             return getRandomArbitrary(0,2*Math.PI);
         } else {
             var bool = Math.random();
             if (bool > .5) {
-                return Math.abs((child[index] + 1/8*Math.PI) % (2*Math.PI))
+                return Math.abs((Number(child[att]) + 1/8*Math.PI) % (2*Math.PI))
             } else {
-                return Math.abs((child[index] - 1/8*Math.PI) % (2*Math.PI))
+                return Math.abs((Number(child[att]) - 1/8*Math.PI) % (2*Math.PI))
             }
         }
         break;
     //radiusMult: range:0,50
-    case 2:
+    case 'radiusMult':
         if (type === "major") {
             return getRandomInt(0,50);
         } else {
             var bool = Math.random();
             if (bool > .5) {
-                return Math.abs((child[index] + 3) % 50)
+                return Math.abs((Number(child[att]) + 3) % 50)
             } else {
-                return Math.abs((child[index] - 3) % 50)
+                return Math.abs((Number(child[att]) - 3) % 50)
             }
         }
         break;
     //foodAccelSize: range:2,100
-    case 3:
+    case 'foodAccelSize':
         if (type === "major") {
             return getRandomInt(2,100);
         } else {
             var bool = Math.random();
             if (bool > .5) {
-                return Math.abs((child[index] + 8) % 100)
+                return Math.abs((Number(child[att]) + 8) % 100)
             } else {
-                return Math.abs((child[index] - 8) % 100)
+                return Math.abs((Number(child[att]) - 8) % 100)
             }
         }
         break;
     //foodAccelAngle: range:0,2*Math.PI
-    case 4:
+    case 'foodAccelAngle':
         if (type === "major") {
             return getRandomArbitrary(0,2*Math.PI);
         } else {
             var bool = Math.random();
             if (bool > .5) {
-                return Math.abs((child[index] + 1/8*Math.PI) % (2*Math.PI))
+                return Math.abs((Number(child[att]) + 1/8*Math.PI) % (2*Math.PI))
             } else {
-                return Math.abs((child[index] - 1/8*Math.PI) % (2*Math.PI))
+                return Math.abs((Number(child[att]) - 1/8*Math.PI) % (2*Math.PI))
             }
         }
         break;
     //foodFrames: range:0,15
-    case 5:
+    case 'foodFrames':
         if (type === "major") {
             return getRandomInt(0,15);
         } else {
             var bool = Math.random();
             if (bool > .5) {
-                return Math.abs((child[index] + 1) % 15)
+                return Math.abs((Number(child[att]) + 1) % 15)
             } else {
-                return Math.abs((child[index] - 1) % 15)
+                return Math.abs((Number(child[att]) - 1) % 15)
             }
         }
         break;
     //foodRoundSize: range:1,20
-    case 6:
+    case 'foodRoundSize':
         if (type === "major") {
             return getRandomInt(1,20);
         } else {
             var bool = Math.random();
             if (bool > .5) {
-                return Math.abs((child[index] + 2) % 20)
+                return Math.abs((Number(child[att]) + 2) % 20)
             } else {
-                return Math.abs((child[index] - 2) % 20)
+                return Math.abs((Number(child[att]) - 2) % 20)
             }
         }
         break;
     //foodRoundAngle: range:0,2*Math.PI
-    case 7:
+    case 'foodRoundAngle':
         if (type === "major") {
             return getRandomArbitrary(0,2*Math.PI);
         } else {
             var bool = Math.random();
             if (bool > .5) {
-                return Math.abs((child[index] + 1/8*Math.PI) % (2*Math.PI))
+                return Math.abs((Number(child[att]) + 1/8*Math.PI) % (2*Math.PI))
             } else {
-                return Math.abs((child[index] - 1/8*Math.PI) % (2*Math.PI))
+                return Math.abs((Number(child[att]) - 1/8*Math.PI) % (2*Math.PI))
             }
         }
         break;
     //foodSmallSize: range:2,30
-    case 8:
+    case 'foodSmallSize':
         if (type === "major") {
             return getRandomInt(2,30);
         } else {
             var bool = Math.random();
             if (bool > .5) {
-                return Math.abs((child[index] + 2) % 30)
+                return Math.abs((Number(child[att]) + 2) % 30)
             } else {
-                return Math.abs((child[index] - 2) % 30)
+                return Math.abs((Number(child[att]) - 2) % 30)
             }
         }
         break;
     //rearHeadAngle: range:0,2*Math.PI
-    case 9:
+    case 'rearHeadAngle':
         if (type === "major") {
             return getRandomArbitrary(0,2*Math.PI);
         } else {
             var bool = Math.random();
             if (bool > .5) {
-                return Math.abs((child[index] + 1/8*Math.PI) % (2*Math.PI))
+                return Math.abs((Number(child[att]) + 1/8*Math.PI) % (2*Math.PI))
             } else {
-                return Math.abs((child[index] - 1/8*Math.PI) % (2*Math.PI))
+                return Math.abs((Number(child[att]) - 1/8*Math.PI) % (2*Math.PI))
             }
         }
         break;
     //rearHeadDir: range:0,2*Math.PI
-    case 10:
-        if (type === "major") {
+    case 'rearHeadDir':
             return getRandomArbitrary(0,2*Math.PI);
         } else {
             var bool = Math.random();
             if (bool > .5) {
-                return Math.abs((child[index] + 1/8*Math.PI) % (2*Math.PI))
+                return Math.abs((Number(child[att]) + 1/8*Math.PI) % (2*Math.PI))
             } else {
-                return Math.abs((child[index] - 1/8*Math.PI) % (2*Math.PI))
+                return Math.abs((Number(child[att]) - 1/8*Math.PI) % (2*Math.PI))
             }
         }
         break;
     //radiusApproachSize: range:1,40
-    case 11:
+    case 'radiusApproachSize':
         if (type === "major") {
             return getRandomInt(1,40);
         } else {
             var bool = Math.random();
             if (bool > .5) {
-                return Math.abs((child[index] + 1) % 40)
+                return Math.abs((Number(child[att]) + 1) % 40)
             } else {
-                return Math.abs((child[index] - 1) % 40)
+                return Math.abs((Number(child[att]) - 1) % 40)
             }
         }
         break;
     //radiusAvoidSize: range:5,100
-    case 12:
+    case 'radiusAvoidSize':
         if (type === "major") {
             return getRandomInt(5,100);
         } else {
             var bool = Math.random();
             if (bool > .5) {
-                return Math.abs((child[index] + 5) % 100)
+                return Math.abs((Number(child[att]) + 5) % 100)
             } else {
-                return Math.abs((child[index] - 5) % 100)
+                return Math.abs((Number(child[att]) - 5) % 100)
             }
         }
         break;
