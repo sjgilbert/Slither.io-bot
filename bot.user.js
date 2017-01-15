@@ -1405,6 +1405,7 @@ var userInterface = window.userInterface = (function() {
             if (window.playing && bot.isBotEnabled && window.snake !== null) {
                 window.onmousemove = function() {};
                 bot.isBotRunning = true;
+                console.log("bloop");
                 bot.go();
                 if (window.best_rank > 0 && window.best_rank < 999999999) {
                     window.s_rank = window.best_rank;
