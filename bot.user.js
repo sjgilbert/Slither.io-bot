@@ -1000,7 +1000,7 @@ var bot = window.bot = (function() {
 
 var getScore = function() {
     var scoreQuery = document.querySelectorAll('div.nsi span')[32];
-    if (scoreQuery !== null && scoreQuery.hasOwnProperty('innerHTML')) {
+    if (typeof scoreQuery !== 'undefined' && scoreQuery.hasOwnProperty('innerHTML')) {
         return scoreQuery.innerHTML;
     } else {
         return 0;
