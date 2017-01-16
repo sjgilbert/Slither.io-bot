@@ -959,7 +959,7 @@ var bot = window.bot = (function() {
             } else if (performance.now() - window.killTimer >= 1000 * 30) {
                 console.log("checking if gains made");
                 var score = getScore();
-                if (score > window.killScore + 100) {
+                if (score > window.killScore + 50) {
                     console.log("gains made. resetting killscore and timer.");
                     window.killScore = score;
                     window.killTimer = performance.now();
@@ -1026,7 +1026,7 @@ var bot = window.bot = (function() {
 
 var getScore = function() {
     var scoreQuery = document.querySelectorAll('div.nsi span')[32];
-    if (typeof scoreQuery !== 'undefined' && scoreQuery.hasOwnProperty('innerHTML')) {
+    if (typeof scoreQuery !== 'undefined' && 'innerHTML' in scoreQuery && scoreQuery.innerHTML !== '') {
         return scoreQuery.innerHTML;
     } else {
         return 0;
@@ -1472,15 +1472,20 @@ var userInterface = window.userInterface = (function() {
                 bot.isBotRunning = false;
                 if (window.lastscore && window.lastscore.childNodes[1]) {
                     //trying to add the rank data here
-                    console.log("adding from natural death");
-                    bot.ranks.push(window.s_rank);
-                    bot.ranks.push(window.s_count);
-                    bot.times.push(performance.now()-window.timer);
-                    bot.scores.push(parseInt(window.lastscore.childNodes[1].innerHTML));
-                    bot.scores.sort(function(a, b) {
-                        return b - a;
-                    });
-                    userInterface.updateStats();
+                    if (performance.now() - window.timer > 5 * 1000) {
+                        console.log("adding from natural death");
+                        bot.ranks.push(window.s_rank);
+                        bot.ranks.push(window.s_count);
+                        bot.times.push(performance.now()-window.timer);
+                        bot.scores.push(parseInt(window.lastscore.childNodes[1].innerHTML));
+                        if parseInt(window.lastscore.childNodes[1].innerHTML === bot.scores[bot.scores.length - 1]
+                        bot.scores.sort(function(a, b) {
+                            return b - a;
+                        });
+                        userInterface.updateStats();
+                    } else {
+                        console.log('avoiding that strange double death error');
+                    }
                 }
 
                 if (window.autoRespawn) {
