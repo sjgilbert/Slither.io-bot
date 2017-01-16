@@ -985,6 +985,7 @@ var bot = window.bot = (function() {
                             bot.ranks = [];
                             bot.times = [];
                         }
+                    }
                     console.log("killing bot now and resetting timer");
                     window.killTimer = performance.now();
                     window.killScore = 0;
