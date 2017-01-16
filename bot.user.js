@@ -947,6 +947,27 @@ var bot = window.bot = (function() {
         go: function() {
             bot.every();
 
+            //creating the kill timer
+            if (window.killTimer === undefined) {
+                window.killTimer = performance.now();
+                var score = getScore();
+                console.log('killscore is: ');
+                console.log(score);
+                window.killScore = score;
+                console.log("created killTimer");
+            } else if (performance.now() - window.killTimer >= 1000 * 30) {
+                console.log("checking if gains made");
+                var score = getScore();
+                if (score > window.killScore + 100) {
+                    console.log("gains made. resetting killscore and timer.");
+                    window.killScore = score;
+                    window.killTimer = performance.now();
+                } else {
+                    console.log("attempting to kill bot and save stats...");
+                    window.playing = false;
+                }
+            }
+
             if (bot.checkCollision()) {
                 bot.lookForFood = false;
                 if (bot.foodTimeout) {
@@ -976,6 +997,10 @@ var bot = window.bot = (function() {
         }
     };
 })();
+
+var getScore = function() {
+    return parseInt(document.querySelectorAll('div.nsi span')[32].innerHTML);
+}
 
 var userInterface = window.userInterface = (function() {
     // Save the original slither.io functions so we can modify them, or reenable them later.
@@ -1405,7 +1430,6 @@ var userInterface = window.userInterface = (function() {
             if (window.playing && bot.isBotEnabled && window.snake !== null) {
                 window.onmousemove = function() {};
                 bot.isBotRunning = true;
-                console.log("bloop");
                 bot.go();
                 if (window.best_rank > 0 && window.best_rank < 999999999) {
                     window.s_rank = window.best_rank;
@@ -1417,6 +1441,7 @@ var userInterface = window.userInterface = (function() {
                 bot.isBotRunning = false;
                 if (window.lastscore && window.lastscore.childNodes[1]) {
                     //trying to add the rank data here
+                    console.log("ADDING IMPORTANT SHIT");
                     bot.ranks.push(window.s_rank);
                     bot.ranks.push(window.s_count);
                     bot.times.push(performance.now()-window.timer);
