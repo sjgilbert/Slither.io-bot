@@ -977,6 +977,7 @@ var bot = window.bot = (function() {
                     window.killTimer = performance.now();
                     window.killScore = 0;
                     bot.quickRespawn();
+                    return;
                 }
             }
 
