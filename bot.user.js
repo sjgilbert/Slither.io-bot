@@ -973,6 +973,18 @@ var bot = window.bot = (function() {
                         return b - a;
                     });
                     userInterface.updateStats();
+                    if (window.autoRespawn) {
+                        if (window.wait) {
+                            makeXHR();
+                            bot.scores = [];
+                            bot.ranks = [];
+                            bot.times = [];
+                        } else if (bot.scores.length === 5) {
+                            makeXHR();
+                            bot.scores = [];
+                            bot.ranks = [];
+                            bot.times = [];
+                        }
                     console.log("killing bot now and resetting timer");
                     window.killTimer = performance.now();
                     window.killScore = 0;
