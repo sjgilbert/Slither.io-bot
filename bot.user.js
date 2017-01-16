@@ -473,6 +473,7 @@ var bot = window.bot = (function() {
             bot.isBotRunning = false;
             window.forcing = true;
             window.connect();
+            window.timer = performance.now();
             window.forcing = false;
         },
 
@@ -963,8 +964,19 @@ var bot = window.bot = (function() {
                     window.killScore = score;
                     window.killTimer = performance.now();
                 } else {
-                    console.log("attempting to kill bot and save stats...");
-                    window.playing = false;
+                    console.log("ADDING IMPORTANT SHIT");
+                    bot.ranks.push(window.s_rank);
+                    bot.ranks.push(window.s_count);
+                    bot.times.push(performance.now()-window.timer);
+                    bot.scores.push(getScore());
+                    bot.scores.sort(function(a, b) {
+                        return b - a;
+                    });
+                    userInterface.updateStats();
+                    console.log("killing bot now and resetting timer");
+                    window.killTimer = performance.now();
+                    window.killScore = 0;
+                    window.quickRespawn();
                 }
             }
 
@@ -1446,7 +1458,7 @@ var userInterface = window.userInterface = (function() {
                 bot.isBotRunning = false;
                 if (window.lastscore && window.lastscore.childNodes[1]) {
                     //trying to add the rank data here
-                    console.log("ADDING IMPORTANT SHIT");
+                    console.log("adding from natural death");
                     bot.ranks.push(window.s_rank);
                     bot.ranks.push(window.s_count);
                     bot.times.push(performance.now()-window.timer);
