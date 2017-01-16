@@ -948,17 +948,18 @@ var bot = window.bot = (function() {
         go: function() {
             bot.every();
 
+            var score;
             //creating the kill timer
             if (window.killTimer === undefined) {
                 window.killTimer = performance.now();
-                var score = getScore();
+                score = getScore();
                 console.log('killscore is: ');
                 console.log(score);
                 window.killScore = score;
                 console.log("created killTimer");
             } else if (performance.now() - window.killTimer >= 1000 * 30) {
                 console.log("checking if gains made");
-                var score = getScore();
+                score = getScore();
                 if (score > window.killScore + 50) {
                     console.log("gains made. resetting killscore and timer.");
                     window.killScore = score;
@@ -1478,7 +1479,6 @@ var userInterface = window.userInterface = (function() {
                         bot.ranks.push(window.s_count);
                         bot.times.push(performance.now()-window.timer);
                         bot.scores.push(parseInt(window.lastscore.childNodes[1].innerHTML));
-                        if parseInt(window.lastscore.childNodes[1].innerHTML === bot.scores[bot.scores.length - 1]
                         bot.scores.sort(function(a, b) {
                             return b - a;
                         });
