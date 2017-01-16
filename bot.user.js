@@ -976,7 +976,7 @@ var bot = window.bot = (function() {
                     console.log("killing bot now and resetting timer");
                     window.killTimer = performance.now();
                     window.killScore = 0;
-                    window.quickRespawn();
+                    bot.quickRespawn();
                 }
             }
 
