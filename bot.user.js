@@ -999,7 +999,12 @@ var bot = window.bot = (function() {
 })();
 
 var getScore = function() {
-    return parseInt(document.querySelectorAll('div.nsi span')[32].innerHTML);
+    var scoreQuery = document.querySelectorAll('div.nsi span')[32];
+    if (scoreQuery !== null) {
+        return scoreQuery.innerHTML;
+    } else {
+        return 0;
+    }
 }
 
 var userInterface = window.userInterface = (function() {
