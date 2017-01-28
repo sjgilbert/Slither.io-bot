@@ -957,16 +957,18 @@ var bot = window.bot = (function() {
                 console.log(score);
                 window.killScore = score;
                 console.log("created killTimer");
-            } else if (performance.now() - window.killTimer >= 1000 * 30) {
-                console.log("checking if gains made");
+            } else if (performance.now() - window.killTimer >= 1000 * 60) {
+                console.log("checking if gains made. prev score is: ");
+                console.log(window.killScore);
                 score = getScore();
+                console.log("new score is: ");
+                console.log(score);
                 //TODO: make this an appropriate number
                 if (score > window.killScore + 10) {
                     console.log("gains made. resetting killscore and timer.");
                     window.killScore = score;
                     window.killTimer = performance.now();
                 } else {
-                    console.log("ADDING IMPORTANT SHIT");
                     bot.ranks.push(window.s_rank);
                     bot.ranks.push(window.s_count);
                     bot.times.push(performance.now()-window.timer);
@@ -988,7 +990,7 @@ var bot = window.bot = (function() {
                             bot.times = [];
                         }
                     }
-                    console.log("killing bot now and resetting timer");
+                    console.log("killing bot from time penalty and resetting timer");
                     window.killTimer = performance.now();
                     window.killScore = 0;
                     bot.quickRespawn();
