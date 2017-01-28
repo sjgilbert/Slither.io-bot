@@ -960,7 +960,8 @@ var bot = window.bot = (function() {
             } else if (performance.now() - window.killTimer >= 1000 * 30) {
                 console.log("checking if gains made");
                 score = getScore();
-                if (score > window.killScore + 50) {
+                //TODO: make this an appropriate number
+                if (score > window.killScore + 10) {
                     console.log("gains made. resetting killscore and timer.");
                     window.killScore = score;
                     window.killTimer = performance.now();

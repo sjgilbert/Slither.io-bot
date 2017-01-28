@@ -13,7 +13,7 @@ const fs = require('fs');
 var agents_completed = [];
 
 // initialize the opts_queue
-var data = fs.readFileSync('./saved_gens.txt', 'utf8');
+var data = fs.readFileSync('./saved_gens_time_penalties.txt', 'utf8');
 var lines = data.split("\n");
 if (lines.length > 1) {
     var opts_queue = JSON.parse(lines.slice(-2)[0]);
@@ -39,6 +39,7 @@ function handleRequest(req, res){
             var query = split_url.slice(-1)[0];
             var parsed_query = querystring.parse(query);
             agents_completed.push(parsed_query);
+            console.log(parsed_query);
             if (opts_queue.length === 0 && agents_completed.length === 10) {
                 writeGenerationToFile();
                 generateNextGeneration();
@@ -72,7 +73,7 @@ function handleRequest(req, res){
 }
 
 function writeGenerationToFile() {
-    fs.appendFile('./saved_gens.txt', JSON.stringify(agents_completed) + '\n', function(err) {
+    fs.appendFile('./saved_gens_time_penalties.txt', JSON.stringify(agents_completed) + '\n', function(err) {
         if(err) {
             return console.log(err);
         }
@@ -96,13 +97,24 @@ function generateNextGeneration() {
 }
 
 function assign_fitness(generation) {
-    var total = 0;
-    //first find the averages
+    var tot_tpp = 0;
+    //get average points and time, generate time per points
     for (var i=0; i<generation.length; i++) {
         var avg = average(generation[i]["scores"].split(','));
-        generation[i]["fitness"] = avg;
-        total += avg;
+        var time = average(generation[i]["times"].split(','));
+        var t_per_point = time / avg;
+        generation[i]["avg"] = avg;
+        generation[i]["tpp"] = t_per_point;
+        tot_tpp += t_per_point;
     }
+
+    var total = 0;
+    for (var i=0; i<generation.length; i++) {
+        var fitness = generation[i]["avg"] * (1 - generation[i]["tpp"] / tot_tpp); 
+        generation[i]["fitness"] = fitness;
+        total += fitness; 
+    }
+
     var run_sum = 0;
     //then give each element a number value for random selection
     for (var i=0; i<generation.length; i++) {
@@ -118,7 +130,6 @@ function select_elites(generation) {
     return generation.slice(0,1);
 }
 
-//TODO: fix so that same agent cant be both parents
 function create_parent_sets(generation) {
     var ret = [];
     for (var i=0; i<9; i++) {
@@ -155,6 +166,8 @@ function generate_child(parents) {
         delete parents[i]["scores"];
         delete parents[i]["ranks"];
         delete parents[i]["times"];
+        delete parents[i]["tpp"];
+        delete parents[i]["avg"];
     }
     var child = crossover(parents);
     child = mutate(child);
@@ -166,9 +179,9 @@ function mutate(child) {
     console.log(child);
     for (var att in child) {
         var rand = Math.random();
-        if (rand < 1/10) {
+        if (rand < .06) {
             child[att] = mutation(child, "major", att);
-        } else if (rand < 3/10) {
+        } else if (rand < .15) {
             child[att] = mutation(child, "minor", att);
         }
     }
@@ -350,7 +363,7 @@ function mutation(child, type, att) {
 function crossover(parents) {
     var par1 = JSON.stringify(parents[0]).split(',');
     var par2 = JSON.stringify(parents[1]).split(',');
-    var divide_point = getRandomInt(0,13);
+    var divide_point = getRandomInt(1,12);
     var child = par1.slice(0,divide_point);
     child = child.concat(par2.slice(divide_point));
     child = child.join();
