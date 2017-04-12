@@ -977,6 +977,7 @@ var bot = window.bot = (function() {
     };
 })();
 
+//trivial commit to make this the new script
 var userInterface = window.userInterface = (function() {
     // Save the original slither.io functions so we can modify them, or reenable them later.
     var original_keydown = document.onkeydown;
